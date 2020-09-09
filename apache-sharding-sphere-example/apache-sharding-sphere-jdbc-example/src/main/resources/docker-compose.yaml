@@ -1,0 +1,70 @@
+version: "3.3"
+services:
+  master0:
+    image: "mysql:latest"
+    ports:
+    - 8803:3306
+    container_name: master0
+    networks:
+      mysql_net:
+         ipv4_address: 172.16.220.2
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+  master1:
+    image: "mysql:latest"
+    ports:
+    - 8804:3306
+    container_name: master1
+    networks:
+      mysql_net:
+         ipv4_address: 172.16.220.3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+  slave0:
+    image: "mysql:latest"
+    container_name: master0slave0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      mysql_net:
+         ipv4_address: 172.16.220.4
+    ports:
+    - 8805:3306
+  slave1:
+    image: "mysql:latest"
+    container_name: master0slave1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      mysql_net:
+         ipv4_address: 172.16.220.5
+    ports:
+    - 8806:3306
+  slave2:
+    image: "mysql:latest"
+    container_name: master1slave0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      mysql_net:
+         ipv4_address: 172.16.220.6
+    ports:
+    - 8807:3306
+  slave3:
+    image: "mysql:latest"
+    container_name: master1slave1
+    ports:
+    - 8808:3306
+    environment:
+       MYSQL_ROOT_PASSWORD: root
+    networks:
+      mysql_net:
+         ipv4_address: 172.16.220.7
+
+networks:
+  mysql_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.220.1/24"
+
